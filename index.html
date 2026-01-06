@@ -6,9 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* =====================
-   BASE PAGE
-===================== */
+
 body {
     margin: 0;
     font-family: "Segoe UI", monospace;
@@ -16,9 +14,6 @@ body {
     overflow-x: hidden;
 }
 
-/* =====================
-   MENU BUTTON
-===================== */
 #menu-button {
     position: fixed;
     top: 20px;
@@ -30,9 +25,6 @@ body {
     user-select: none;
 }
 
-/* =====================
-   FULLSCREEN MENU
-===================== */
 #menu {
     position: fixed;
     inset: 0;
@@ -47,14 +39,10 @@ body {
     overflow: hidden;
 }
 
-/* OPEN STATE */
 #menu.open {
     transform: translateY(0);
 }
 
-/* =====================
-   MATRIX TEXTURE
-===================== */
 #menu::before {
     content: "";
     position: absolute;
@@ -83,9 +71,6 @@ body {
     to { background-position: 0 200px; }
 }
 
-/* =====================
-   MENU CONTENT
-===================== */
 .menu-items {
     position: relative;
     text-align: center;
@@ -93,9 +78,6 @@ body {
     letter-spacing: 0.15em;
 }
 
-/* =====================
-   MENU ITEMS
-===================== */
 .menu-item {
     padding: 20px 40px;
     margin: 10px 0;
@@ -105,15 +87,11 @@ body {
         color 0.3s ease;
 }
 
-/* HOVER INVERT */
 .menu-item:hover {
     background: white;
     color: black;
 }
 
-/* =====================
-   SMOOTH FADE-IN
-===================== */
 #menu.open .menu-item {
     animation: fadeUp 0.8s ease forwards;
 }
@@ -132,10 +110,8 @@ body {
 </head>
 <body>
 
-<!-- MENU BUTTON -->
 <div id="menu-button">Menu</div>
 
-<!-- MENU OVERLAY -->
 <div id="menu">
     <div class="menu-items">
         <div class="menu-item" data-text="HOME">HOME</div>
@@ -148,9 +124,7 @@ body {
 </div>
 
 <script>
-/* =====================
-   MENU TOGGLE
-===================== */
+
 const menuBtn = document.getElementById("menu-button");
 const menu = document.getElementById("menu");
 
@@ -158,9 +132,6 @@ menuBtn.addEventListener("click", () => {
     menu.classList.toggle("open");
 });
 
-/* =====================
-   MATRIX SCRAMBLE EFFECT
-===================== */
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 document.querySelectorAll(".menu-item").forEach(item => {
