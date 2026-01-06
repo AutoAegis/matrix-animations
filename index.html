@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Huge Matrix Menu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* =====================
+   BASE PAGE
+===================== */
+body {
+    margin: 0;
+    font-family: "Segoe UI", monospace;
+    background: white;
+    overflow-x: hidden;
+}
+
+/* =====================
+   MENU BUTTON
+===================== */
+#menu-button {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 1001;
+    user-select: none;
+}
+
+/* =====================
+   FULLSCREEN MENU
+===================== */
+#menu {
+    position: fixed;
+    inset: 0;
+    background: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-100%);
+    transition: transform 0.8s cubic-bezier(.77,0,.18,1);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+/* OPEN STATE */
+#menu.open {
+    transform: translateY(0);
+}
+
+/* =====================
+   MATRIX TEXTURE
+===================== */
+#menu::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,0.03),
+            rgba(255,255,255,0.03) 1px,
+            transparent 1px,
+            transparent 3px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,0.02),
+            rgba(255,255,255,0.02) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+    animation: scan 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    from { background-position: 0 0; }
+    to { background-position: 0 200px; }
+}
+
+/* =====================
+   MENU CONTENT
+===================== */
+.menu-items {
+    position: relative;
+    text-align: center;
+    font-size: clamp(48px, 8vw, 120px);
+    letter-spacing: 0.15em;
+}
+
+/* =====================
+   MENU ITEMS
+===================== */
+.menu-item {
+    padding: 20px 40px;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: 
+        background 0.3s ease,
+        color 0.3s ease;
+}
+
+/* HOVER INVERT */
+.menu-item:hover {
+    background: white;
+    color: black;
+}
+
+/* =====================
+   SMOOTH FADE-IN
+===================== */
+#menu.open .menu-item {
+    animation: fadeUp 0.8s ease forwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- MENU BUTTON -->
+<div id="menu-button">Menu</div>
+
+<!-- MENU OVERLAY -->
+<div id="menu">
+    <div class="menu-items">
+        <div class="menu-item" data-text="HOME">HOME</div>
+        <div class="menu-item" data-text="ABOUT">ABOUT</div>
+        <div class="menu-item" data-text="LORE">LORE</div>
+        <div class="menu-item" data-text="LAW">LAW</div>
+        <div class="menu-item" data-text="SHOP">SHOP</div>
+        <div class="menu-item" data-text="LINKS">LINKS</div>
+    </div>
+</div>
+
+<script>
+/* =====================
+   MENU TOGGLE
+===================== */
+const menuBtn = document.getElementById("menu-button");
+const menu = document.getElementById("menu");
+
+menuBtn.addEventListener("click", () => {
+    menu.classList.toggle("open");
+});
+
+/* =====================
+   MATRIX SCRAMBLE EFFECT
+===================== */
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+document.querySelectorAll(".menu-item").forEach(item => {
+    let interval = null;
+
+    item.addEventListener("mouseenter", () => {
+        let iteration = 0;
+        const originalText = item.dataset.text;
+
+        clearInterval(interval);
+        interval = setInterval(() => {
+            item.innerText = originalText
+                .split("")
+                .map((char, index) => {
+                    if (index < iteration) return char;
+                    return letters[Math.floor(Math.random() * letters.length)];
+                })
+                .join("");
+
+            iteration += 1 / 3;
+
+            if (iteration >= originalText.length) {
+                clearInterval(interval);
+                item.innerText = originalText;
+            }
+        }, 30);
+    });
+
+    item.addEventListener("mouseleave", () => {
+        clearInterval(interval);
+        item.innerText = item.dataset.text;
+    });
+});
+</script>
+
+</body>
+</html>
